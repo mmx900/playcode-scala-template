@@ -1,7 +1,27 @@
-@(message: String)
-
-@layout("Welcome to Play") {
-
-	playcode-scala-template
-
+@layout {
+	<body ng-controller="RootCtrl">
+		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<form class="navbar-form navbar-right" role="search" ng-controller="ItemQueryCtrl" ng-submit="search()">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="키워드" ng-model="keyword">
+				</div>
+				<button type="submit" class="btn btn-success">검색</button>
+			</form>
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/">PROJECT</a>
+				</div>
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="#/item">목록</a></li>
+						<li ng-if="!AuthService.isAuthenticated()"><a href="/login">로그인</a></li>
+						<li ng-if="AuthService.isAuthenticated()"><a href="#" ng-click="AuthService.logout()">{{Session.nickname}} 로그아웃</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div ng-view></div>
+		</div>
+	</body>
 }

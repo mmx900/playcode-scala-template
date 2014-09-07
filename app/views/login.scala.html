@@ -1,0 +1,20 @@
+@(redirectPath:String)
+
+@layout {
+	<body>
+		<div class="container" ng-controller="LoginCtrl">
+			<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="alert.close()">{{alert.msg}}</alert>
+			<form ng-submit="submit()" class="form-signin" role="form">
+				<h2 class="form-signin-heading">로그인</h2>
+				<input ng-model="email" type="email" class="form-control" placeholder="이메일 주소" required autofocus>
+				<input ng-model="password" type="password" class="form-control" placeholder="비밀번호" required>
+				<label class="checkbox">
+					<input type="checkbox" value="remember-me"> 기억하기
+				</label>
+				<button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
+				<a class="btn btn-lg btn-default btn-block" href="/signup?redirectPath=@redirectPath">가입</a>
+			</form>
+		</div>
+
+	</body>
+}

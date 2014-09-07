@@ -1,0 +1,13 @@
+<div class="row">
+	<div class="col-md-3" ng-repeat="chart in charts">
+		<h2>{{chart.id}} - {{chart.title}}</h2>
+
+		<a href="#" class="thumbnail">
+			<img src="/chart/{{chart.id}}/image" alt="{{chart.title}} 이미지">
+		</a>
+
+		<p>타입 : {{chart.chartType}}</p>
+
+		<p><a class="btn btn-default" href="/#/chart/{{chart.id}}" role="button">보기 &raquo;</a></p>
+	</div>
+</div>

@@ -1,0 +1,16 @@
+@layout {
+	<body>
+		<div class="container" ng-controller="SignUpCtrl">
+			<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="alert.close()">{{alert.msg}}</alert>
+			<form ng-submit="submit()" class="form-signin" role="form">
+				<h2 class="form-signin-heading">회원 가입</h2>
+				<input ng-model="email" type="email" class="form-control" placeholder="이메일 주소" required autofocus>
+				<input ng-model="nickname" type="nickname" class="form-control" placeholder="별명" required>
+				<input ng-model="password" type="password" class="form-control" placeholder="비밀번호" required>
+				<input ng-model="password_check" type="password" class="form-control" placeholder="비밀번호 확인" required>
+				<button class="btn btn-lg btn-primary btn-block" type="submit">가입</button>
+			</form>
+
+		</div>
+	</body>
+}
