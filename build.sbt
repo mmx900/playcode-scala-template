@@ -4,22 +4,29 @@ version := "1.0-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-scalaVersion := "2.11.2"
+scalaVersion := "2.11.7"
 
 resolvers ++= Seq(
 	"Sonatype snapshots repository" at "https://oss.sonatype.org/content/repositories/snapshots/"
 )
 
+val angularVersion = "1.4.3"
+
 libraryDependencies ++= Seq(
-	jdbc,
-	anorm,
 	cache,
 	ws,
-	"com.typesafe.play" %% "play-slick" % "0.8.0",
-	"org.pac4j" % "play-pac4j_scala" % "1.3.0-SNAPSHOT",
-	"org.pac4j" % "pac4j-oauth" % "1.5.1",
-	"org.webjars" % "jquery" % "2.1.1",
-	"org.webjars" % "bootstrap" % "3.2.0",
-	"org.webjars" % "angularjs" % "1.3.0-rc.0",
-	"org.webjars" % "angular-ui-bootstrap" % "0.11.0-2"
+	"com.typesafe.play" %% "play-slick" % "1.0.1",
+	"com.typesafe.play" %% "play-slick-evolutions" % "1.0.1",
+	"com.h2database" % "h2" % "1.4.188",
+	"org.pac4j" %% "play-pac4j-scala" % "1.5.0",
+	"org.pac4j" % "pac4j-oauth" % "1.7.1",
+	"org.webjars.bower" % "jquery" % "2.1.4",
+	"org.webjars.bower" % "bootstrap" % "3.3.5",
+	"org.webjars.bower" % "angular" % angularVersion,
+	"org.webjars.bower" % "angular-route" % angularVersion,
+	"org.webjars.bower" % "angular-resource" % angularVersion,
+	"org.webjars.bower" % "angular-sanitize" % angularVersion,
+	"org.webjars.bower" % "angular-bootstrap" % "0.13.3"
 )
+
+routesGenerator := InjectedRoutesGenerator

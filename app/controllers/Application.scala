@@ -1,16 +1,18 @@
 package controllers
 
-import play.api.mvc.{Action, Request}
+import javax.inject.Inject
+import play.api.mvc._
 import play.api.libs.json.{Json, JsValue, Writes}
-import play.api.db.slick.{DBAction, DBSessionRequest, dbSessionRequestAsSession}
-import play.api.Play.current
 import play.api.data.Form
 import play.api.data.Forms.{email, nonEmptyText, tuple}
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import models.User
+import dao.UsersDAO
 import views.html
-import org.pac4j.play.scala.ScalaController
+import org.pac4j.core.profile.CommonProfile
+import org.pac4j.play.scala.Security
 
-object Application extends ScalaController with Secured {
+class Application @Inject()(usersDao: UsersDAO) extends Controller with Security[CommonProfile] with Secured {
 
 	implicit val userReads = Json.reads[User]
 
@@ -40,16 +42,16 @@ object Application extends ScalaController with Secured {
 		)
 	)
 
-	def signUp = DBAction {
+	def signUp = Action.async {
 		implicit rs =>
 			val (email, nickname, password) = signUpForm.bindFromRequest.get
 			val u = new User(email, password, nickname)
-			val userId = models.Users.insert(u)
-
-			Ok.withSession(
-				"id" -> userId.toString,
-				"nickname" -> u.nickname
-			)
+			usersDao.insert(u).map { userId =>
+				Ok.withSession(
+					"id" -> userId.toString,
+					"nickname" -> u.nickname
+				)
+			}
 	}
 
 	def getRedirectPath(request: Request[_]) = {
@@ -68,10 +70,10 @@ object Application extends ScalaController with Secured {
 		tuple("email" -> email, "password" -> nonEmptyText)
 	)
 
-	def login = DBAction {
+	def login = Action.async {
 		implicit rs =>
 			val (email, password) = loginForm.bindFromRequest.get
-			models.Users.findByEmail(email) match {
+			usersDao.findByEmail(email) map {
 				case Some(u) if u.password == password =>
 					Ok.withSession(
 						"id" -> u.id.get.toString,

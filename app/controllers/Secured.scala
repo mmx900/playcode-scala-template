@@ -14,12 +14,6 @@ trait Secured {
 		Results.Redirect(routes.Application.login).flashing("error" -> "You need to login first.")
 	}
 
-	def isAuthenticated(f: => models.User => DBSessionRequest[_] => SimpleResult) = {
-			Security.Authenticated(req => getUserFromRequest(req), onUnauthorized) {
-				user => DBAction(rs => f(user)(rs))
-			}
-	}
-
 	def getUserFromRequest(implicit request: RequestHeader) = {
 		userId(request) match {
 			case Some(x) if !x.trim.isEmpty =>
